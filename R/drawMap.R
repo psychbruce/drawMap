@@ -27,6 +27,8 @@ if(FALSE) {
 #' Draw standard China maps
 #' @import ggplot2
 #' @importFrom cowplot ggdraw draw_plot save_plot
+#' @importFrom glue glue_col
+#' @importFrom crayon green blue
 ## @import grid
 #' @param provdata Province-level data. You can use \code{\link[dplyr]{left_join}} to merge your prov data with \code{provdata_demo} (a demo dataset in \code{bruceR}) by the variable \code{"prov"}.
 #' If not specified, it will draw a demo map for you (see Examples).
@@ -212,9 +214,8 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
 
   # Feedback
   path=ifelse(grepl(":", filename), filename, paste0(getwd(), '/', filename))
-  suppressWarnings({
-    bruceR::Print("<<green \u2714>> Saved to <<blue '{path}'>>")
-  })
+  # bruceR::Print("<<green \u2714>> Saved to <<blue '{path}'>>")
+  print(glue_col("{green \u2714} Saved to {blue '{path}'}"))
 
   invisible(list(map.main=map1, map.jdx=map2))
 }
