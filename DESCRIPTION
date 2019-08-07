@@ -1,0 +1,17 @@
+Package: drawMap
+Type: Package
+Title: Easily Draw China and World Maps
+Version: 0.1.0
+Authors@R: c(
+  person("Han-Wu-Shuang", "Bao", email="baohws@psych.ac.cn", role=c("aut", "cre"))
+  )
+Author: Han-Wu-Shuang Bao [aut, cre]
+Maintainer: Han-Wu-Shuang Bao <baohws@psych.ac.cn>
+Description: Easily Draw China and World Maps.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/psychbruce/drawMap
+BugReports: https://github.com/psychbruce/drawMap/issues
+Imports: dplyr, ggplot2, mapproj, cowplot
+RoxygenNote: 6.1.1
