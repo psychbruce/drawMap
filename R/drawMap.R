@@ -212,7 +212,9 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
 
   # Feedback
   path=ifelse(grepl(":", filename), filename, paste0(getwd(), '/', filename))
-  bruceR::Print("<<green \u2714>> Saved to <<blue '{path}'>>")
+  suppressWarnings({
+    bruceR::Print("<<green \u2714>> Saved to <<blue '{path}'>>")
+  })
 
   invisible(list(map.main=map1, map.jdx=map2))
 }
