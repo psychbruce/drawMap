@@ -13,6 +13,10 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/psychbruce/drawMap
 BugReports: https://github.com/psychbruce/drawMap/issues
-Imports: dplyr, ggplot2, mapproj, cowplot,
-         glue, crayon
+Imports: dplyr (>= 0.7.5),
+         ggplot2 (>= 3.0.0),
+         mapproj (>= 1.2-5),
+         cowplot (>= 0.9.0),
+         glue (>= 1.3.0),
+         crayon (>= 1.3.2)
 RoxygenNote: 6.1.1

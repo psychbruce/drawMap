@@ -10,5 +10,7 @@ Two functions are provided to draw standard China map and World map:
 (Demo datasets are also provided.)
 }
 \author{
-\href{https://www.zhihu.com/people/psychbruce/}{Han-Wu-Shuang (Bruce) Bao} <E-mail: \email{baohws@psych.ac.cn} or \email{psychbruce@qq.com}>
+\href{https://www.zhihu.com/people/psychbruce/}{Han-Wu-Shuang (Bruce) Bao} (personal profile on Zhihu.com)
+
+E-mail: \email{baohws@psych.ac.cn} or \email{psychbruce@qq.com}
 }
