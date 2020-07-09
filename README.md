@@ -1,6 +1,6 @@
 # drawMap
 
-Easily Draw China and World Maps
+Easily Draw China Maps
 
 ![](https://img.shields.io/badge/R-package-success)
 ![](https://img.shields.io/badge/Version-0.1.0-success)
@@ -18,13 +18,13 @@ devtools::install_github("psychbruce/drawMap")
 
 
 ## Release Notes
-### Current version: `0.1.0`
+### Current version: `0.2.0`
 ### Major changes:
-+ `0.1.0` - 08 August 2019
++ `0.2.0` - 2020.07
+  + General bug-fixes and improvements
++ `0.1.0` - 2019.08
   + Initial commit
 
 
 ## Author
-[Han-Wu-Shuang (Bruce) Bao](https://www.zhihu.com/people/psychbruce/ "Personal profile on Zhihu.com")
-
-E-mail: baohws@psych.ac.cn or psychbruce@qq.com
+[Han-Wu-Shuang (Bruce) Bao](https://psychbruce.github.io/)

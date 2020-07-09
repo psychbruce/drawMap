@@ -11,7 +11,7 @@ if(FALSE) {
   usethis::use_data(provdata_demo, overwrite=TRUE)
 }
 
-#' Draw standard China maps
+#' Draw standard China map
 #' @import ggplot2
 #' @importFrom cowplot ggdraw draw_plot save_plot
 #' @importFrom glue glue_col
@@ -57,6 +57,7 @@ if(FALSE) {
 #' @param bordersize Line size of map border. Default is \code{0.2}.
 #' @param bordercolor Line color of map border. Default is \code{"grey70"}.
 #' @param na.color A color for those provinces with missing values. Default is \code{"grey90"}.
+#' @param font Text font.
 #' @param filename File name to create on disk. The file type can be any of ".pdf", ".png", ".jpg", ".bmp", ".tiff", ".eps", ... (see \code{\link[ggplot2]{ggsave}}).
 #' @param dpi Dots per inch (DPI). A higher DPI produces clearer and more detailed output. Academic papars usually require 300 dpi at least. Here I use 500 as a default value.
 #' (Note: PDF documents are not influenced by DPI.)
@@ -70,11 +71,12 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
                       var=NA, multiply=1, log=FALSE, nsmall=0,
                       colors="Blues", direc=1,
                       cityshape=18, cityalpha=0.9,
-                      addlabel=TRUE, labelprefix="", labelseg=":",
+                      addlabel=TRUE, labelprefix="", labelseg=": ",
                       tag="", title=var, subtitle=NULL,
                       guidetitle="", addguidelabel=TRUE,
                       guidelimits=NULL, guidebreaks=NULL, guidelabels=NULL,
                       bordersize=0.2, bordercolor="grey70", na.color="grey90",
+                      font="Arial",
                       filename="ChinaMap.png", dpi=500) {
   # Merge data
   if(is.null(citydata)) {
@@ -139,6 +141,7 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
     if(is.null(guidebreaks)) guidebreaks=guide.range
     if(is.null(guidelabels)) guidelabels=sprintf(paste0("%.", nsmall, "f"), guide.range*multiply) # c(floor(guide.range[1]), ceiling(guide.range[2]))
   }
+  windowsFonts(FONT=windowsFont(font))
 
   # Draw maps
   map=ggplot() + maptheme
@@ -174,16 +177,17 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
   # Add labels
   if(level=="prov") {
     if((is.na(var)==TRUE | addlabel==FALSE) & labelprefix!="") {
-      map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=get(labelprefix)), fontface="bold", size=3)
+      map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=get(labelprefix)), fontface="bold", size=3, family="FONT")
     }
     if(is.na(var)==FALSE & addlabel==TRUE & labelprefix=="") {
-      map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=sprintf(paste0("%.", nsmall, "f"), get(var)*multiply)), size=3)
+      map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=sprintf(paste0("%.", nsmall, "f"), get(var)*multiply)), size=3, family="FONT")
     }
     if(is.na(var)==FALSE & addlabel==TRUE & labelprefix!="") {
-      map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=paste0(get(labelprefix), labelseg, sprintf(paste0("%.", nsmall, "f"), get(var)*multiply))), size=3)
+      map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=paste0(get(labelprefix), labelseg, sprintf(paste0("%.", nsmall, "f"), get(var)*multiply))), size=3, family="FONT")
     }
   }
-  map1=map1 + labs(tag=tag, title=title)
+  map1=map1 + labs(tag=tag, title=title) +
+    theme(text=element_text(family="FONT", face="bold"))
 
   # Output (old; have bugs influencing subsequent plotting)
   # if(grepl(".pdf$", filename)) {
@@ -196,8 +200,10 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
   # dev.off()
 
   # Output (with 'cowplot' package)
-  save_plot(filename, base_width=8, base_height=6, dpi=dpi,
-            plot=ggdraw() + draw_plot(map1) + draw_plot(map2, x=0.76, y=0.06, width=0.2, height=0.2))
+  suppressWarnings({
+    save_plot(filename, base_width=8, base_height=6, dpi=dpi,
+              plot=ggdraw() + draw_plot(map1) + draw_plot(map2, x=0.76, y=0.06, width=0.2, height=0.2))
+  })
 
   # Feedback
   path=ifelse(grepl(":", filename), filename, paste0(getwd(), '/', filename))

@@ -2,16 +2,37 @@
 % Please edit documentation in R/drawChinaMap.R
 \name{drawChinaMap}
 \alias{drawChinaMap}
-\title{Draw standard China maps}
+\title{Draw standard China map}
 \usage{
-drawChinaMap(provdata = NULL, citydata = NULL, var = NA,
-  multiply = 1, log = FALSE, nsmall = 0, colors = "Blues",
-  direc = 1, cityshape = 18, cityalpha = 0.9, addlabel = TRUE,
-  labelprefix = "", labelseg = ":", tag = "", title = var,
-  subtitle = NULL, guidetitle = "", addguidelabel = TRUE,
-  guidelimits = NULL, guidebreaks = NULL, guidelabels = NULL,
-  bordersize = 0.2, bordercolor = "grey70", na.color = "grey90",
-  filename = "ChinaMap.png", dpi = 500)
+drawChinaMap(
+  provdata = NULL,
+  citydata = NULL,
+  var = NA,
+  multiply = 1,
+  log = FALSE,
+  nsmall = 0,
+  colors = "Blues",
+  direc = 1,
+  cityshape = 18,
+  cityalpha = 0.9,
+  addlabel = TRUE,
+  labelprefix = "",
+  labelseg = ": ",
+  tag = "",
+  title = var,
+  subtitle = NULL,
+  guidetitle = "",
+  addguidelabel = TRUE,
+  guidelimits = NULL,
+  guidebreaks = NULL,
+  guidelabels = NULL,
+  bordersize = 0.2,
+  bordercolor = "grey70",
+  na.color = "grey90",
+  font = "Arial",
+  filename = "ChinaMap.png",
+  dpi = 500
+)
 }
 \arguments{
 \item{provdata}{Province-level data. You can use \code{\link[dplyr]{left_join}} to merge your prov data with \code{provdata_demo} (a demo dataset in \code{bruceR}) by the variable \code{"prov"}.
@@ -78,6 +99,8 @@ PuBuGn, YlGnBu, YlOrBr, YlOrRd}
 
 \item{na.color}{A color for those provinces with missing values. Default is \code{"grey90"}.}
 
+\item{font}{Text font.}
+
 \item{filename}{File name to create on disk. The file type can be any of ".pdf", ".png", ".jpg", ".bmp", ".tiff", ".eps", ... (see \code{\link[ggplot2]{ggsave}}).}
 
 \item{dpi}{Dots per inch (DPI). A higher DPI produces clearer and more detailed output. Academic papars usually require 300 dpi at least. Here I use 500 as a default value.
@@ -87,7 +110,7 @@ PuBuGn, YlGnBu, YlOrBr, YlOrRd}
 Invisibly return a list of two maps (a main map and a sub-map for Nanhai islands).
 }
 \description{
-Draw standard China maps
+Draw standard China map
 }
 \examples{
 drawChinaMap() # draw a demo map
