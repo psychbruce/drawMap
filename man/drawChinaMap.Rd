@@ -35,7 +35,7 @@ drawChinaMap(
 )
 }
 \arguments{
-\item{provdata}{Province-level data. You can use \code{\link[dplyr]{left_join}} to merge your prov data with \code{provdata_demo} (a demo dataset in \code{bruceR}) by the variable \code{"prov"}.
+\item{provdata}{Province-level data. You can use \code{\link[dplyr]{left_join}} to merge your prov data with \code{provdata_demo} (a demo dataset in \code{drawMap}) by the variable \code{"prov"}.
 If not specified, it will draw a demo map for you (see Examples).
 
 For details about \code{provdata_demo}, type this in your console:
