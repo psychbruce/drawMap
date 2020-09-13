@@ -7,7 +7,10 @@ if(FALSE) {
   maptemp=dplyr::full_join(ggplot2::fortify(bou), bou@data, by="id")
   usethis::use_data(maptemp, overwrite=TRUE)
 
-  provdata_demo=rio::import("data-raw/provdata_demo.xlsx")
+  provdata_temp=rio::import("data-raw/provdata_demo.xlsx", sheet="prov")
+  usethis::use_data(provdata_temp, overwrite=TRUE)
+
+  provdata_demo=rio::import("data-raw/provdata_demo.xlsx", sheet="demo")
   usethis::use_data(provdata_demo, overwrite=TRUE)
 }
 
@@ -16,14 +19,12 @@ if(FALSE) {
 #' @importFrom cowplot ggdraw draw_plot save_plot
 #' @importFrom glue glue_col
 #' @importFrom crayon green blue
-## @import grid
-#' @param provdata Province-level data. You can use \code{\link[dplyr]{left_join}} to merge your prov data with \code{provdata_demo} (a demo dataset in \code{drawMap}) by the variable \code{"prov"}.
-#' If not specified, it will draw a demo map for you (see Examples).
-#'
-#' For details about \code{provdata_demo}, type this in your console:
-#' \code{View(provdata_demo)}
+#' @param provdata Province-level data.
+#' You can use \code{\link[dplyr]{left_join}} or \code{\link[dplyr]{right_join}}
+#' to merge your province-level data with \code{provdata_temp} (see Examples).
 #' @param citydata City-level data with two variables (must be "geoE" and "geoN") specifying the longitude and latitude of cities, respectively.
-#' @param var A character specifying the variable you want to map to the plot.
+#' @param var.prov The variable of provinces, e.g., \code{"prov"}.
+#' @param var The variable you want to map on the plot.
 #' @param multiply A number useful when you want to expand the raw values by, e.g., 100 times.
 #' @param log \code{TRUE} or \code{FALSE} (default). Whether to log-transform the raw values.
 #' @param nsmall Number of decimal places of output. Default is 0.
@@ -63,11 +64,24 @@ if(FALSE) {
 #' (Note: PDF documents are not influenced by DPI.)
 #' @return Invisibly return a list of two maps (a main map and a sub-map for Nanhai islands).
 #' @examples
-#' drawChinaMap() # draw a demo map
-#' drawChinaMap(provdata_demo, var="geoE", nsmall=1, filename="ChinaMap1.png")
-#' drawChinaMap(provdata_demo, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
+#' ## Template
+#' View(provdata_temp)  # a template province-level dataset
+#' drawChinaMap() # draw a template of China map (no variables)
+#' drawChinaMap(provdata_temp, var="geoE", nsmall=1, filename="ChinaMap1.png")
+#' drawChinaMap(provdata_temp, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
+#'
+#' ## How to use it with a real dataset?
+#' View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
+#' drawChinaMap(provdata_demo, var.prov="Province", var="GDPpc", nsmall=0, filename="ChinaMap_GDPpc.png")
+#'
+#' ## Use dplyr::left_join() or dplyr::right_join() to merge datasets
+#' View(provdata_demo)
+#' provdata=dplyr::right_join(provdata_temp, provdata_demo, by=c("prov"="Province"))
+#' View(provdata)
+#' drawChinaMap(provdata, var="GDPpc", nsmall=0, title="GDP per capita", filename="ChinaMap_GDPpc.png")
 #' @export
 drawChinaMap=function(provdata=NULL, citydata=NULL,
+                      var.prov="prov",
                       var=NA, multiply=1, log=FALSE, nsmall=0,
                       colors="Blues", direc=1,
                       cityshape=18, cityalpha=0.9,
@@ -86,6 +100,9 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
       title="China Map (demo)"
       labelprefix="prov"
     }
+    if(!"NAME" %in% names(provdata)) {
+      provdata=dplyr::right_join(provdata_temp, provdata, by=c("prov"=var.prov))
+    }
     data=provdata
   } else {
     level="city"
@@ -98,8 +115,8 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
   # Basic settings
   map.long=c(73.4, 135.1)
   map.lat=c(17.4, 53.6)
-  jdx.long=c(107, 122)
-  jdx.lat=c(4, 24)
+  jdx.long=c(108.5, 121.5)
+  jdx.lat=c(5.5, 25)
   jdx=data.frame(ID=rep(1:10, each=2),
                  long=c(109.10, 109.80,
                         110.20, 109.90,
@@ -170,9 +187,16 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
                             limits=guidelimits, breaks=guidebreaks, labels=guidelabels,
                             guide=mapguide)
   }
-  map=map + geom_line(data=jdx, aes(x=long, y=lat, group=ID), color="black", size=0.5)
-  map1=map + coord_map(c("lambert", "albers")[1], parameters=c(25, 47), xlim=map.long, ylim=map.lat)
-  map2=map + coord_map(xlim=jdx.long, ylim=jdx.lat) + geom_rect(aes(xmin=jdx.long[1], xmax=jdx.long[2], ymin=jdx.lat[1], ymax=jdx.lat[2]), fill=NA, color="black", size=0.5) + theme(legend.position="none")
+  map1=map +
+    coord_map("lambert",  # or "albers"
+              parameters=c(25, 47),
+              xlim=map.long, ylim=map.lat)
+  map2=ggplot() + theme_void() +
+    geom_polygon(data=mapdata, aes(x=long, y=lat, group=group), fill="grey95", color="grey30", size=0.2) +
+    geom_line(data=jdx, aes(x=long, y=lat, group=ID), color="black", size=0.5) +
+    coord_map("lambert", parameters=c(25, 47), xlim=jdx.long, ylim=jdx.lat) +
+    theme(legend.position="none",
+          panel.border=element_rect(color="black", fill=NA, size=0.5))
 
   # Add labels
   if(level=="prov") {
@@ -189,25 +213,16 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
   map1=map1 + labs(tag=tag, title=title) +
     theme(text=element_text(family="FONT", face="bold"))
 
-  # Output (old; have bugs influencing subsequent plotting)
-  # if(grepl(".pdf$", filename)) {
-  #   pdf(filename, width=8, height=6)
-  # } else {
-  #   png(filename, width=8, height=6, units="in", res=dpi)
-  # }
-  # print(map1)
-  # print(map2, vp=grid::viewport(width=0.2, height=0.2, x=0.86, y=0.16))
-  # dev.off()
-
   # Output (with 'cowplot' package)
   suppressWarnings({
     save_plot(filename, base_width=8, base_height=6, dpi=dpi,
-              plot=ggdraw() + draw_plot(map1) + draw_plot(map2, x=0.76, y=0.06, width=0.2, height=0.2))
+              plot=ggdraw() +
+                draw_plot(map1) +
+                draw_plot(map2, x=0.76, y=0.06, width=0.2, height=0.2))
   })
 
   # Feedback
   path=ifelse(grepl(":", filename), filename, paste0(getwd(), '/', filename))
-  # bruceR::Print("<<green \u2714>> Saved to <<blue '{path}'>>")
   print(glue_col("{green \u2714} Saved to {blue '{path}'}"))
 
   invisible(list(map.main=map1, map.jdx=map2))

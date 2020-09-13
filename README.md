@@ -3,7 +3,7 @@
 Easily Draw China Maps
 
 ![](https://img.shields.io/badge/R-package-success)
-![](https://img.shields.io/badge/Version-0.2.0-success)
+![](https://img.shields.io/badge/Version-0.3.0-success)
 ![](https://img.shields.io/github/license/psychbruce/drawMap?label=License&color=success)
 [![](https://img.shields.io/github/stars/psychbruce/drawMap?style=social)](https://github.com/psychbruce/drawMap/stargazers)
 
@@ -27,14 +27,17 @@ Website: [psychbruce.github.io](https://psychbruce.github.io)
 
 ## Install from GitHub
 ```r
-if(!require(devtools)) install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("psychbruce/drawMap")
 ```
 
 
 ## Release Notes
-### Current version: `0.2.0`
+### Current version: `0.3.0`
 ### Major changes:
++ `0.3.0` - 2020.09
+  + Easier to use
+  + More examples in help page (see `?drawChinaMap` or `help(drawChinaMap)`)
 + `0.2.0` - 2020.07
   + General bug-fixes and improvements
 + `0.1.0` - 2019.08

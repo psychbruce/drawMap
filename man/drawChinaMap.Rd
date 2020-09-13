@@ -7,6 +7,7 @@
 drawChinaMap(
   provdata = NULL,
   citydata = NULL,
+  var.prov = "prov",
   var = NA,
   multiply = 1,
   log = FALSE,
@@ -35,15 +36,15 @@ drawChinaMap(
 )
 }
 \arguments{
-\item{provdata}{Province-level data. You can use \code{\link[dplyr]{left_join}} to merge your prov data with \code{provdata_demo} (a demo dataset in \code{drawMap}) by the variable \code{"prov"}.
-If not specified, it will draw a demo map for you (see Examples).
-
-For details about \code{provdata_demo}, type this in your console:
-\code{View(provdata_demo)}}
+\item{provdata}{Province-level data.
+You can use \code{\link[dplyr]{left_join}} or \code{\link[dplyr]{right_join}}
+to merge your province-level data with \code{provdata_temp} (see Examples).}
 
 \item{citydata}{City-level data with two variables (must be "geoE" and "geoN") specifying the longitude and latitude of cities, respectively.}
 
-\item{var}{A character specifying the variable you want to map to the plot.}
+\item{var.prov}{The variable of provinces, e.g., \code{"prov"}.}
+
+\item{var}{The variable you want to map on the plot.}
 
 \item{multiply}{A number useful when you want to expand the raw values by, e.g., 100 times.}
 
@@ -113,7 +114,19 @@ Invisibly return a list of two maps (a main map and a sub-map for Nanhai islands
 Draw standard China map
 }
 \examples{
-drawChinaMap() # draw a demo map
-drawChinaMap(provdata_demo, var="geoE", nsmall=1, filename="ChinaMap1.png")
-drawChinaMap(provdata_demo, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
+## Template
+View(provdata_temp)  # a template province-level dataset
+drawChinaMap() # draw a template of China map (no variables)
+drawChinaMap(provdata_temp, var="geoE", nsmall=1, filename="ChinaMap1.png")
+drawChinaMap(provdata_temp, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
+
+## How to use it with a real dataset?
+View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
+drawChinaMap(provdata_demo, var.prov="Province", var="GDPpc", nsmall=0, filename="ChinaMap_GDPpc.png")
+
+## Use dplyr::left_join() or dplyr::right_join() to merge datasets
+View(provdata_demo)
+provdata=dplyr::right_join(provdata_temp, provdata_demo, by=c("prov"="Province"))
+View(provdata)
+drawChinaMap(provdata, var="GDPpc", nsmall=0, title="GDP per capita", filename="ChinaMap_GDPpc.png")
 }

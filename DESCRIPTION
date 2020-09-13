@@ -1,7 +1,7 @@
 Package: drawMap
 Type: Package
 Title: Easily Draw China Maps
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
   person("Han-Wu-Shuang", "Bao", email="baohws@psych.ac.cn", role=c("aut", "cre"))
   )
@@ -13,6 +13,7 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/psychbruce/drawMap
 BugReports: https://github.com/psychbruce/drawMap/issues
+Depends: R (>= 4.0.0)
 Imports: dplyr,
          ggplot2,
          mapproj,

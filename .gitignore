@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.png
-.pdf
+*.png
+*.pdf
 to-do
