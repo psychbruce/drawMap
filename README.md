@@ -32,12 +32,35 @@ devtools::install_github("psychbruce/drawMap")
 ```
 
 
+## How to Use
+
+**For details, run `?drawChinaMap` or `help(drawChinaMap)` to read the help page.**
+
+```r
+## Template
+View(provdata_temp)  # a template province-level dataset
+drawChinaMap() # draw a template of China map (no variables)
+drawChinaMap(provdata_temp, var="geoE", nsmall=1, filename="ChinaMap1.png")
+drawChinaMap(provdata_temp, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
+
+## How to use it with a real dataset?
+View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
+drawChinaMap(provdata_demo, var.prov="Province", var="GDPpc", nsmall=0, filename="ChinaMap_GDPpc.png")
+
+## Use dplyr::left_join() or dplyr::right_join() to merge datasets
+View(provdata_demo)
+provdata=dplyr::right_join(provdata_temp, provdata_demo, by=c("prov"="Province"))
+View(provdata)
+drawChinaMap(provdata, var="GDPpc", nsmall=0, title="GDP per capita", filename="ChinaMap_GDPpc.png")
+```
+
+
 ## Release Notes
 ### Current version: `0.3.0`
 ### Major changes:
 + `0.3.0` - 2020.09
   + Easier to use
-  + More examples in help page (see `?drawChinaMap` or `help(drawChinaMap)`)
+  + More examples in help page
 + `0.2.0` - 2020.07
   + General bug-fixes and improvements
 + `0.1.0` - 2019.08
