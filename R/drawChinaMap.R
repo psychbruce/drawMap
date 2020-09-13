@@ -66,18 +66,18 @@ if(FALSE) {
 #' @examples
 #' ## Template
 #' View(provdata_temp)  # a template province-level dataset
-#' drawChinaMap() # draw a template of China map (no variables)
+#' drawChinaMap()  # draw a template of China map (no variables)
 #' drawChinaMap(provdata_temp, var="geoE", nsmall=1, filename="ChinaMap1.png")
 #' drawChinaMap(provdata_temp, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
 #'
 #' ## How to use it with a real dataset?
 #' View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
+#'
+#' # Method 1: Use the 'var.prov' parameter
 #' drawChinaMap(provdata_demo, var.prov="Province", var="GDPpc", nsmall=0, filename="ChinaMap_GDPpc.png")
 #'
-#' ## Use dplyr::left_join() or dplyr::right_join() to merge datasets
-#' View(provdata_demo)
+#' # Method 2: Use dplyr::left_join() or dplyr::right_join() to merge datasets
 #' provdata=dplyr::right_join(provdata_temp, provdata_demo, by=c("prov"="Province"))
-#' View(provdata)
 #' drawChinaMap(provdata, var="GDPpc", nsmall=0, title="GDP per capita", filename="ChinaMap_GDPpc.png")
 #' @export
 drawChinaMap=function(provdata=NULL, citydata=NULL,
