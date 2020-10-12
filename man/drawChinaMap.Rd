@@ -21,7 +21,7 @@ drawChinaMap(
   labelseg = ": ",
   tag = "",
   title = var,
-  subtitle = NULL,
+  subtitle = "",
   guidetitle = "",
   addguidelabel = TRUE,
   guidelimits = NULL,

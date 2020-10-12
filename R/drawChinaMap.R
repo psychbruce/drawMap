@@ -86,7 +86,7 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
                       colors="Blues", direc=1,
                       cityshape=18, cityalpha=0.9,
                       addlabel=TRUE, labelprefix="", labelseg=": ",
-                      tag="", title=var, subtitle=NULL,
+                      tag="", title=var, subtitle="",
                       guidetitle="", addguidelabel=TRUE,
                       guidelimits=NULL, guidebreaks=NULL, guidelabels=NULL,
                       bordersize=0.2, bordercolor="grey70", na.color="grey90",
@@ -144,7 +144,9 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
           plot.tag=element_text(size=16, color="black", face="bold",
                                 margin=margin(-1, 0, ifelse(is.null(title), 0, 1), 0.5, "lines")),
           plot.title=element_text(size=16, color="black", face="bold", hjust=0.5,
-                                  margin=margin(-1, 0, 0.5, 0, "lines")))
+                                  margin=margin(-0.5, 0, 0, 0, "lines")),
+          plot.subtitle=element_text(size=14, color="black", face="bold", hjust=0.5,
+                                     margin=margin(1.5, 0, -1.5, 0, "lines")))
   mapguide=guide_colorbar(title=guidetitle, title.position="top", title.hjust=0.5,
                           direction="horizontal", label=addguidelabel, ticks=FALSE,
                           barwidth=unit(5,"cm"), barheight=unit(5,"mm"))
@@ -210,7 +212,7 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
       map1=map1 + geom_text(data=provdata, aes(x=geoE, y=geoN, label=paste0(get(labelprefix), labelseg, sprintf(paste0("%.", nsmall, "f"), get(var)*multiply))), size=3, family="FONT")
     }
   }
-  map1=map1 + labs(tag=tag, title=title) +
+  map1=map1 + labs(tag=tag, title=title, subtitle=subtitle) +
     theme(text=element_text(family="FONT", face="bold"))
 
   # Output (with 'cowplot' package)

@@ -3,7 +3,7 @@
 Easily Draw China Maps
 
 ![](https://img.shields.io/badge/R-package-success)
-![](https://img.shields.io/badge/Version-0.3.0-success)
+![](https://img.shields.io/badge/Version-0.3.5-success)
 ![](https://img.shields.io/github/license/psychbruce/drawMap?label=License&color=success)
 [![](https://img.shields.io/github/stars/psychbruce/drawMap?style=social)](https://github.com/psychbruce/drawMap/stargazers)
 
@@ -56,7 +56,7 @@ drawChinaMap(provdata, var="GDPpc", nsmall=0, title="GDP per capita", filename="
 
 
 ## Release Notes
-### Current version: `0.3.0`
+### Current version: `0.3.5`
 ### Major changes:
 + `0.3.0` - 2020.09
   + Easier to use
