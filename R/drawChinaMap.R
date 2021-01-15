@@ -166,7 +166,7 @@ drawChinaMap=function(provdata=NULL, citydata=NULL,
   map=ggplot() + maptheme
   if(is.na(var) | level=="city") {
     bordercolor="grey30"
-    map=map + geom_polygon(data=mapdata, aes(x=long, y=lat, group=group), fill="grey95", color=bordercolor, size=bordersize)
+    map=map + geom_polygon(data=mapdata, aes(x=long, y=lat, group=group), fill="white", color=bordercolor, size=bordersize)
   } else {
     if(log) {
       map=map + geom_polygon(data=mapdata, aes(x=long, y=lat, group=group, fill=log(get(var))), color=bordercolor, size=bordersize)
