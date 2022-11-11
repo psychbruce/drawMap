@@ -17,10 +17,5 @@ LazyDataCompression: xz
 URL: https://github.com/psychbruce/drawMap
 BugReports: https://github.com/psychbruce/drawMap/issues
 Depends: R (>= 4.0.0)
-Imports: dplyr,
-         ggplot2,
-         mapproj,
-         cowplot,
-         glue,
-         crayon
+Imports: dplyr, ggplot2, cowplot, cli
 RoxygenNote: 7.2.1

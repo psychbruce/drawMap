@@ -131,7 +131,7 @@ Draw standard China map.
 }
 \examples{
 ## Template
-View(provdata_temp)  # a template province-level dataset
+# View(provdata_temp)  # a template province-level dataset
 drawChinaMap()  # draw a template of China map (no variables)
 
 drawChinaMap(provdata_temp,
@@ -143,7 +143,7 @@ drawChinaMap(provdata_temp,
              filename="ChinaMap2.png")
 
 ## How to use it with real data?
-View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
+# View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
 
 # Method 1: Use the 'var.prov' parameter
 drawChinaMap(provdata_demo, var.prov="Province",
@@ -156,5 +156,11 @@ drawChinaMap(provdata,
              var="GDPpc", digits=0,
              title="GDP per capita",
              filename="ChinaMap_GDPpc.png")
+
+# delete files for code check
+unlink(c("ChinaMap.png",
+         "ChinaMap1.png",
+         "ChinaMap2.png",
+         "ChinaMap_GDPpc.png"))
 
 }

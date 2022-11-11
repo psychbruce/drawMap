@@ -5,6 +5,8 @@ if(FALSE) {
   bou = rgdal::readOGR("data-raw/bou2_4p.shp", encoding="CP936")
   bou@data$id = rownames(bou@data)
   maptemp = dplyr::full_join(ggplot2::fortify(bou), bou@data, by="id")
+  bruceR::export(maptemp, "data-raw/maptemp.xlsx")
+  maptemp = bruceR::import("data-raw/maptemp.xlsx")
   usethis::use_data(maptemp, overwrite=TRUE)
 
   provdata_temp = rio::import("data-raw/provdata_demo.xlsx", sheet="prov")
@@ -18,8 +20,7 @@ if(FALSE) {
 #'
 #' @import ggplot2
 #' @importFrom cowplot ggdraw draw_plot save_plot
-#' @importFrom glue glue_col
-#' @importFrom crayon green blue
+#' @importFrom dplyr left_join right_join full_join
 #'
 #' @param provdata Province-level data.
 #' You can use \code{\link[dplyr]{left_join}} or \code{\link[dplyr]{right_join}}
@@ -85,7 +86,7 @@ if(FALSE) {
 #'
 #' @examples
 #' ## Template
-#' View(provdata_temp)  # a template province-level dataset
+#' # View(provdata_temp)  # a template province-level dataset
 #' drawChinaMap()  # draw a template of China map (no variables)
 #'
 #' drawChinaMap(provdata_temp,
@@ -97,7 +98,7 @@ if(FALSE) {
 #'              filename="ChinaMap2.png")
 #'
 #' ## How to use it with real data?
-#' View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
+#' # View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
 #'
 #' # Method 1: Use the 'var.prov' parameter
 #' drawChinaMap(provdata_demo, var.prov="Province",
@@ -110,6 +111,12 @@ if(FALSE) {
 #'              var="GDPpc", digits=0,
 #'              title="GDP per capita",
 #'              filename="ChinaMap_GDPpc.png")
+#'
+#' # delete files for code check
+#' unlink(c("ChinaMap.png",
+#'          "ChinaMap1.png",
+#'          "ChinaMap2.png",
+#'          "ChinaMap_GDPpc.png"))
 #'
 #' @export
 drawChinaMap = function(
@@ -143,6 +150,12 @@ drawChinaMap = function(
     filename="ChinaMap.png",
     dpi=500) {
 
+  # Initiate
+  ID = geoE = geoN = group = lat = long = NULL
+  maptemp = drawMap::maptemp
+  provdata_demo = drawMap::provdata_demo
+  provdata_temp = drawMap::provdata_temp
+
   # Merge data
   if(is.null(citydata)) {
     level = "prov"
@@ -153,7 +166,7 @@ drawChinaMap = function(
       labelprefix = "prov"
     }
     if(!"NAME" %in% names(provdata)) {
-      provdata = dplyr::right_join(provdata_temp, provdata, by=c("prov"=var.prov))
+      provdata = right_join(provdata_temp, provdata, by=c("prov"=var.prov))
     }
     data = provdata
   } else {
@@ -161,7 +174,7 @@ drawChinaMap = function(
     data = citydata
   }
   suppressWarnings({
-    mapdata = dplyr::full_join(maptemp, provdata, by="NAME")
+    mapdata = full_join(maptemp, provdata, by="NAME")
   })
 
   # Basic settings
@@ -351,12 +364,12 @@ drawChinaMap = function(
       draw_plot(map1) +
       draw_plot(map2, x=0.76, y=0.06, width=0.2, height=0.2)
     print(p)
-    dev.off()
+    grDevices::dev.off()
   })
 
   # Feedback
   path = ifelse(grepl(":", filename), filename, paste0(getwd(), '/', filename))
-  print(glue_col("{green \u2714} Saved to {blue '{path}'}"))
+  cli::cli_alert_success("Saved to \"{path}\"")
 
   invisible(list(map.main=map1, map.jdx=map2))
 }

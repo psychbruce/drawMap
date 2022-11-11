@@ -13,7 +13,7 @@
 
 #' drawMap: Easily Draw China Maps
 #'
-#' One function is provided to draw standard China map:
+#' One function to draw standard China map:
 #' \code{\link{drawChinaMap}} (demo datasets are also provided.)
 #'
 #' @author
@@ -21,4 +21,13 @@
 #'
 #' @docType package
 #' @name drawMap-package
+NULL
+
+
+#' Demo data and templates.
+#'
+#' \code{provdata_demo} and \code{provdata_temp}.
+#' See \code{\link{drawChinaMap}}.
+#' @name provdata_demo
+#' @aliases provdata_temp maptemp
 NULL

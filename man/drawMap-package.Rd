@@ -5,7 +5,7 @@
 \alias{drawMap-package}
 \title{drawMap: Easily Draw China Maps}
 \description{
-One function is provided to draw standard China map:
+One function to draw standard China map:
 \code{\link{drawChinaMap}} (demo datasets are also provided.)
 }
 \author{
