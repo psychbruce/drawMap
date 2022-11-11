@@ -2,7 +2,7 @@
 % Please edit documentation in R/drawChinaMap.R
 \name{drawChinaMap}
 \alias{drawChinaMap}
-\title{Draw standard China map}
+\title{Draw standard China map.}
 \usage{
 drawChinaMap(
   provdata = NULL,
@@ -11,7 +11,8 @@ drawChinaMap(
   var = NA,
   multiply = 1,
   log = FALSE,
-  nsmall = 0,
+  digits = 0,
+  nsmall = digits,
   colors = "Blues",
   direc = 1,
   cityshape = 18,
@@ -30,7 +31,7 @@ drawChinaMap(
   bordersize = 0.2,
   bordercolor = "grey70",
   na.color = "grey90",
-  font = "Arial",
+  font = NULL,
   filename = "ChinaMap.png",
   dpi = 500
 )
@@ -40,19 +41,21 @@ drawChinaMap(
 You can use \code{\link[dplyr]{left_join}} or \code{\link[dplyr]{right_join}}
 to merge your province-level data with \code{provdata_temp} (see Examples).}
 
-\item{citydata}{City-level data with two variables (must be "geoE" and "geoN") specifying the longitude and latitude of cities, respectively.}
+\item{citydata}{City-level data with two variables (must be "geoE" and "geoN")
+specifying the longitude and latitude of cities, respectively.}
 
 \item{var.prov}{The variable of provinces, e.g., \code{"prov"}.}
 
-\item{var}{The variable you want to map on the plot.}
+\item{var}{The variable to show on the map.}
 
 \item{multiply}{A number useful when you want to expand the raw values by, e.g., 100 times.}
 
 \item{log}{\code{TRUE} or \code{FALSE} (default). Whether to log-transform the raw values.}
 
-\item{nsmall}{Number of decimal places of output. Default is 0.}
+\item{digits, nsmall}{Number of decimal places of output. Defaults to \code{0}.}
 
-\item{colors}{Color palettes. The following palettes are available (see \code{\link[ggplot2]{scale_color_brewer}}):
+\item{colors}{Color palettes. The following palettes are available
+(see \code{\link[ggplot2]{scale_color_brewer}}):
 
 \strong{Sequential:}
 \code{Blues, Greens, Greys, Oranges, Purples, Reds,
@@ -67,66 +70,91 @@ PuBuGn, YlGnBu, YlOrBr, YlOrRd}
 
 \item{direc}{\code{1} (default) or \code{-1}, specifying the direction of color palette.}
 
-\item{cityshape}{The shape of city dots. I recommend using 16 (round) or 18 (rhombus). Default is 18. For details, see \href{http://sape.inf.usi.ch/quick-reference/ggplot2/shape}{shape parameter}.}
+\item{cityshape}{The shape of city dots. 16 (round) or 18 (rhombus) would be fine.
+Defaults to \code{18}.
+See \href{http://sape.inf.usi.ch/quick-reference/ggplot2/shape}{shape parameter}.}
 
-\item{cityalpha}{The transparency of city dots. Default is 0.9.}
+\item{cityalpha}{The transparency of city dots. Defaults to \code{0.9}.}
 
-\item{addlabel}{\code{TRUE} (default) or \code{FALSE}. Whether to add value labels. For clarity, value labels are only added to provinces but not to cities.}
+\item{addlabel}{\code{TRUE} (default) or \code{FALSE}. Whether to add value labels.
+For clarity, value labels are only added to provinces but not to cities.}
 
-\item{labelprefix}{A character specifying a variable in your data for adding label prefix, usually \code{"prov"} if you want to add the names of provinces prior to values.
-(Note: You can draw the label prefix only, by setting \code{addlable=FALSE} and \code{labelprefix="yourvariable"}.)}
+\item{labelprefix}{A character specifying a variable in your data for adding label prefix,
+usually \code{"prov"} if you want to add the names of provinces prior to values.
+(Note: You can draw the label prefix only,
+by setting \code{addlable=FALSE} and \code{labelprefix="yourvariable"}.)}
 
-\item{labelseg}{A character specifying the joint character between label prefix and values (e.g., setting to \code{": "} will make a label look like \code{"Beijing: 1.23"}).}
+\item{labelseg}{A character specifying the joint character
+between label prefix and values (e.g., setting to \code{": "}
+will make a label look like \code{"Beijing: 1.23"}).}
 
-\item{tag}{Tag of the map (left-top corner). Default is \code{""}, which leaves the position occupied but without any text.}
+\item{tag}{Tag of the map (left-top corner).
+Defaults to \code{""}, which leaves the position occupied without any text.}
 
-\item{title}{Title of the map. Default is the variable name.}
+\item{title}{Title of the map. Defaults to the variable name.}
 
-\item{subtitle}{Subtitle of the map. Default is \code{NULL}, which does not occupy the position.}
+\item{subtitle}{Subtitle of the map. Defaults to \code{NULL},
+which does not occupy the position.}
 
 \item{guidetitle}{Title of the colorbar guide.}
 
-\item{addguidelabel}{\code{TRUE} (default) or \code{FALSE}. Whether to add values under the colorbar guide.}
+\item{addguidelabel}{\code{TRUE} (default) or \code{FALSE}.
+Whether to add values under the colorbar guide.}
 
-\item{guidelimits}{[Optional] A number vector specifying the range of values to plot (relevant both to the main plot and to the colorbar guide). Default is the actual range of your variable.}
+\item{guidelimits}{A number vector specifying the range of values to plot
+(relevant both to the main plot and to the colorbar guide).
+Defaults to the actual range of your variable.}
 
-\item{guidebreaks}{[Optional] A number vector specifying the breaking points of colorbar, e.g., \code{seq(0, 100, 25)}.}
+\item{guidebreaks}{A number vector specifying the breaking points of colorbar,
+e.g., \code{seq(0, 100, 25)}.}
 
-\item{guidelabels}{[Optional] A vector re-setting the labels of the colorbar guide.}
+\item{guidelabels}{A vector re-setting the labels of the colorbar guide.}
 
-\item{bordersize}{Line size of map border. Default is \code{0.2}.}
+\item{bordersize}{Line size of map border. Defaults to \code{0.2}.}
 
-\item{bordercolor}{Line color of map border. Default is \code{"grey70"}.}
+\item{bordercolor}{Line color of map border. Defaults to \code{"grey70"}.}
 
-\item{na.color}{A color for those provinces with missing values. Default is \code{"grey90"}.}
+\item{na.color}{A color for those provinces with missing values.
+Defaults to \code{"grey90"}.}
 
-\item{font}{Text font.}
+\item{font}{Text font. Only for Windows systems.}
 
-\item{filename}{File name to create on disk. The file type can be any of ".pdf", ".png", ".jpg", ".bmp", ".tiff", ".eps", ... (see \code{\link[ggplot2]{ggsave}}).}
+\item{filename}{File name to be saved, should be either ".png" or ".jpg".}
 
-\item{dpi}{Dots per inch (DPI). A higher DPI produces clearer and more detailed output. Academic papars usually require 300 dpi at least. Here I use 500 as a default value.
-(Note: PDF documents are not influenced by DPI.)}
+\item{dpi}{Dots per inch (DPI). Defaults to \code{500}.}
 }
 \value{
 Invisibly return a list of two maps (a main map and a sub-map for Nanhai islands).
 }
 \description{
-Draw standard China map
+Draw standard China map.
 }
 \examples{
 ## Template
 View(provdata_temp)  # a template province-level dataset
 drawChinaMap()  # draw a template of China map (no variables)
-drawChinaMap(provdata_temp, var="geoE", nsmall=1, filename="ChinaMap1.png")
-drawChinaMap(provdata_temp, var="geoN", nsmall=1, colors="Reds", direc=-1, addlabel=FALSE, filename="ChinaMap2.png")
 
-## How to use it with a real dataset?
+drawChinaMap(provdata_temp,
+             var="geoE", digits=1,
+             filename="ChinaMap1.png")
+drawChinaMap(provdata_temp,
+             var="geoN", digits=1,
+             colors="Reds", direc=-1, addlabel=FALSE,
+             filename="ChinaMap2.png")
+
+## How to use it with real data?
 View(provdata_demo)  # a demo dataset (per capita GDP for 31 mainland provinces)
 
 # Method 1: Use the 'var.prov' parameter
-drawChinaMap(provdata_demo, var.prov="Province", var="GDPpc", nsmall=0, filename="ChinaMap_GDPpc.png")
+drawChinaMap(provdata_demo, var.prov="Province",
+             var="GDPpc", digits=0,
+             filename="ChinaMap_GDPpc.png")
 
 # Method 2: Use dplyr::left_join() or dplyr::right_join() to merge datasets
-provdata=dplyr::right_join(provdata_temp, provdata_demo, by=c("prov"="Province"))
-drawChinaMap(provdata, var="GDPpc", nsmall=0, title="GDP per capita", filename="ChinaMap_GDPpc.png")
+provdata = dplyr::right_join(provdata_temp, provdata_demo, by=c("prov"="Province"))
+drawChinaMap(provdata,
+             var="GDPpc", digits=0,
+             title="GDP per capita",
+             filename="ChinaMap_GDPpc.png")
+
 }
